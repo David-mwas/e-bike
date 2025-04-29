@@ -1,14 +1,16 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import HomePage from './pages/HomePage';
-import ShopPage from './pages/ShopPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CartPage from './pages/CartPage';
-import CheckoutPage from './pages/CheckoutPage';
-import { CartProvider } from './context/CartContext';
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+import HomePage from "./pages/HomePage";
+import ShopPage from "./pages/ShopPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
               <Route path="/product/:id" element={<ProductDetailPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
             </Routes>
           </main>
           <Footer />
