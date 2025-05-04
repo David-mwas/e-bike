@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Menu, X, Search, ChevronDown } from 'lucide-react';
-import { useCart } from '../../context/CartContext';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { ShoppingCart, Menu, X, Search, ChevronDown } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -9,19 +9,22 @@ const Header: React.FC = () => {
   const { cartItems } = useCart();
   const location = useLocation();
 
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    setIsMobileMenuOpen(false);
+    setIsMobileMenuOpen(false); // Close menu when route changes
   }, [location]);
 
   const toggleMobileMenu = () => {
@@ -31,7 +34,7 @@ const Header: React.FC = () => {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        isScrolled ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-4 py-4">
@@ -49,6 +52,7 @@ const Header: React.FC = () => {
             >
               Home
             </Link>
+
             <div className="relative group">
               <Link
                 to="/shop"
@@ -85,6 +89,7 @@ const Header: React.FC = () => {
                 </div>
               </div>
             </div>
+
             <Link
               to="/about"
               className="text-gray-700 hover:text-blue-600 transition-colors"
@@ -99,7 +104,7 @@ const Header: React.FC = () => {
             </Link>
           </nav>
 
-          {/* Search, Cart, and Mobile Menu Toggle */}
+          {/* Right Controls */}
           <div className="flex items-center space-x-4">
             <button
               className="text-gray-700 hover:text-blue-600 transition-colors"
@@ -107,9 +112,9 @@ const Header: React.FC = () => {
             >
               <Search className="h-6 w-6" />
             </button>
-            
-            <Link 
-              to="/cart" 
+
+            <Link
+              to="/cart"
               className="relative text-gray-700 hover:text-blue-600 transition-colors"
             >
               <ShoppingCart className="h-6 w-6" />
@@ -119,22 +124,27 @@ const Header: React.FC = () => {
                 </span>
               )}
             </Link>
-            
+
+            {/* Mobile Menu Toggle */}
             <button
               className="md:hidden text-gray-700 hover:text-blue-600 transition-colors"
               onClick={toggleMobileMenu}
               aria-label="Toggle mobile menu"
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
       </div>
-
-      {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-white shadow-md transform transition-transform duration-300 ease-in-out ${
-          isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
+        className={`md:hidden fixed top-16 left-0 right-0 z-40 bg-white shadow-md transform transition-all duration-300 ease-in-out ${
+          isMobileMenuOpen
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-5 pointer-events-none"
         }`}
       >
         <div className="px-4 py-4 space-y-4">

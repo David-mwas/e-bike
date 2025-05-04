@@ -1,34 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Check } from 'lucide-react';
-import { products } from '../data/products';
-import ProductCard from '../components/product/ProductCard';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Star } from "lucide-react";
+import { products } from "../data/products";
+import ProductCard from "../components/product/ProductCard";
+
+import { motion } from "framer-motion";
+
+const sectionVariant = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+};
 
 const HomePage: React.FC = () => {
-  const [featuredProducts, setFeaturedProducts] = useState(products.slice(0, 4));
-  const [topRatedProducts, setTopRatedProducts] = useState(products.slice(0, 4));
+  const [featuredProducts, setFeaturedProducts] = useState(
+    products.slice(0, 4)
+  );
+  const [topRatedProducts, setTopRatedProducts] = useState(
+    products.slice(0, 4)
+  );
 
   useEffect(() => {
     // Get featured products (ones with discounts)
     const discountedProducts = products
-      .filter(product => product.discount > 0)
+      .filter((product) => product.discount > 0)
       .sort((a, b) => b.discount - a.discount)
       .slice(0, 4);
-    
+
     setFeaturedProducts(discountedProducts);
 
     // Get top rated products
     const highestRated = [...products]
       .sort((a, b) => b.rating - a.rating)
       .slice(0, 4);
-    
+
     setTopRatedProducts(highestRated);
   }, []);
 
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[600px] bg-gray-900 text-white overflow-hidden">
+      <motion.section
+        className="relative h-[600px] bg-gray-900 text-white overflow-hidden"
+        initial="hidden"
+        animate="visible"
+        variants={sectionVariant}
+      >
         <div className="absolute inset-0 z-0">
           <img
             src="https://i.pinimg.com/736x/fb/30/43/fb3043c84e46bc033f7374bd0b20bd9f.jpg"
@@ -38,7 +54,15 @@ const HomePage: React.FC = () => {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-transparent z-10"></div>
         <div className="container mx-auto px-4 h-full flex items-center relative z-20">
-          <div className="max-w-lg">
+          <motion.div
+            className="max-w-lg"
+            initial={{ opacity: 0, x: -80 }}
+            animate={{
+              opacity: 1,
+              x: 0,
+              transition: { delay: 0.3, duration: 1 },
+            }}
+          >
             <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
               Discover the Power of Electric Biking
             </h1>
@@ -47,32 +71,52 @@ const HomePage: React.FC = () => {
               terrain, journey, and adventure.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link
-                to="/shop"
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
-              >
-                Shop Now <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                to="/about"
-                className="bg-white text-blue-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center justify-center"
-              >
-                Learn More
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }}>
+                <Link
+                  to="/shop"
+                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
+                >
+                  Shop Now <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }}>
+                <Link
+                  to="/about"
+                  className="bg-white text-blue-900 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center justify-center"
+                >
+                  Learn More
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Featured Categories */}
-      <section className="py-16 bg-gray-50">
+      <motion.section
+        className="py-16 bg-gray-50"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={sectionVariant}
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
             Explore by Category
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link to="/shop?category=mountain" className="group">
-              <div className="relative h-64 rounded-lg overflow-hidden">
+              <motion.div
+                className="relative h-64 rounded-lg overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6 },
+                }}
+                viewport={{ once: true }}
+              >
                 <img
                   src="https://images.pexels.com/photos/1149601/pexels-photo-1149601.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                   alt="Mountain E-Bikes"
@@ -87,11 +131,21 @@ const HomePage: React.FC = () => {
                     Conquer any trail with power and precision
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </Link>
 
             <Link to="/shop?category=city" className="group">
-              <div className="relative h-64 rounded-lg overflow-hidden">
+              <motion.div
+                className="relative h-64 rounded-lg overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6 },
+                }}
+                viewport={{ once: true }}
+              >
                 <img
                   src="https://images.pexels.com/photos/5465196/pexels-photo-5465196.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                   alt="City E-Bikes"
@@ -106,11 +160,21 @@ const HomePage: React.FC = () => {
                     Navigate urban environments with ease
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </Link>
 
             <Link to="/shop?category=folding" className="group">
-              <div className="relative h-64 rounded-lg overflow-hidden">
+              <motion.div
+                className="relative h-64 rounded-lg overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6 },
+                }}
+                viewport={{ once: true }}
+              >
                 <img
                   src="https://images.pexels.com/photos/4597829/pexels-photo-4597829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                   alt="Folding E-Bikes"
@@ -125,11 +189,21 @@ const HomePage: React.FC = () => {
                     Compact power for commuters on the go
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </Link>
 
             <Link to="/shop?category=cruiser" className="group">
-              <div className="relative h-64 rounded-lg overflow-hidden">
+              <motion.div
+                className="relative h-64 rounded-lg overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6 },
+                }}
+                viewport={{ once: true }}
+              >
                 <img
                   src="https://images.pexels.com/photos/805303/pexels-photo-805303.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                   alt="Cruiser E-Bikes"
@@ -144,14 +218,20 @@ const HomePage: React.FC = () => {
                     Stylish comfort for relaxed riding
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </Link>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Featured Products */}
-      <section className="py-16 bg-white">
+      <motion.section
+        className="py-16 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={sectionVariant}
+      >
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
             <h2 className="text-3xl font-bold">Featured E-Bikes</h2>
@@ -165,21 +245,47 @@ const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6 },
+                }}
+                viewport={{ once: true }}
+              >
+                <ProductCard product={product} />
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 bg-gray-900 text-white">
+      <motion.section
+        className="py-16 bg-gray-900 text-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={sectionVariant}
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-16">
             Why Choose E-Bike Central
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <div className="text-center">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{
+                opacity: 1,
+                scale: 1,
+                transition: { duration: 0.5 },
+              }}
+              viewport={{ once: true }}
+            >
               <div className="flex justify-center mb-6">
                 <div className="bg-blue-600 p-4 rounded-full">
                   <svg
@@ -201,9 +307,18 @@ const HomePage: React.FC = () => {
                 All our e-bikes are built with high-quality components for
                 durability and performance you can trust.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="text-center">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{
+                opacity: 1,
+                scale: 1,
+                transition: { duration: 0.5 },
+              }}
+              viewport={{ once: true }}
+            >
               <div className="flex justify-center mb-6">
                 <div className="bg-blue-600 p-4 rounded-full">
                   <svg
@@ -224,9 +339,18 @@ const HomePage: React.FC = () => {
                 We stand behind our products with an industry-leading warranty
                 on all frames and electrical components.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="text-center">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{
+                opacity: 1,
+                scale: 1,
+                transition: { duration: 0.5 },
+              }}
+              viewport={{ once: true }}
+            >
               <div className="flex justify-center mb-6">
                 <div className="bg-blue-600 p-4 rounded-full">
                   <svg
@@ -250,13 +374,19 @@ const HomePage: React.FC = () => {
                 Our knowledgeable team is always ready to help with personalized
                 advice and technical support.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Top Rated Products */}
-      <section className="py-16 bg-gray-50">
+      <motion.section
+        className="py-16 bg-gray-50"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={sectionVariant}
+      >
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
             <h2 className="text-3xl font-bold">Top Rated E-Bikes</h2>
@@ -270,11 +400,22 @@ const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {topRatedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6 },
+                }}
+                viewport={{ once: true }}
+              >
+                <ProductCard product={product} />
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Testimonials */}
       <section className="py-16 bg-white">
